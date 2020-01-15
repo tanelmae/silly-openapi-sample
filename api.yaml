@@ -1,0 +1,115 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: OpenGo Test
+servers:
+  - url: https://development.gigantic-server.com/v1
+    description: Development server
+  - url: https://staging.gigantic-server.com/v1
+    description: Staging server
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+paths:
+  /hello:
+    get:
+      summary:
+      operationId: hello
+      parameters:
+        - name: name
+          in: query
+          description: Send client name to the server
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Hello response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelloResp"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /path/{name}:
+    get:
+      summary:
+      operationId: hello-path
+      parameters:
+        - name: name
+          in: path
+          description: Send client name to the server
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Hello response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelloResp"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /upload:
+    post:
+      description: Upload name with POST
+      operationId: nameupload
+      requestBody:
+        description: Send client name to the server
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HelloReq"
+      responses:
+        "200":
+          description: Hello response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HelloResp"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      required:
+        - name
+      properties:
+        message:
+          type: string
+    HelloResp:
+      required:
+        - name
+      properties:
+        greeting:
+          type: string
+        introduction:
+          type: string
+    HelloReq:
+      required:
+        - name
+      properties:
+        name:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
