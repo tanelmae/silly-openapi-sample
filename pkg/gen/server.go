@@ -14,6 +14,8 @@ import (
 type ServerInterface interface {
 	// (GET /hello)
 	Hello(ctx echo.Context, params HelloParams) error
+	// (POST /image)
+	Img(ctx echo.Context) error
 	// (GET /path/{name})
 	HelloPath(ctx echo.Context, name string) error
 	// (POST /upload)
@@ -45,6 +47,17 @@ func (w *ServerInterfaceWrapper) Hello(ctx echo.Context) error {
 
 	// Invoke the callback with all the unmarshalled arguments
 	err = w.Handler.Hello(ctx, params)
+	return err
+}
+
+// Img converts echo context to params.
+func (w *ServerInterfaceWrapper) Img(ctx echo.Context) error {
+	var err error
+
+	ctx.Set("bearerAuth.Scopes", []string{""})
+
+	// Invoke the callback with all the unmarshalled arguments
+	err = w.Handler.Img(ctx)
 	return err
 }
 
@@ -95,6 +108,7 @@ func RegisterHandlers(router interface {
 	}
 
 	router.GET("/hello", wrapper.Hello)
+	router.POST("/image", wrapper.Img)
 	router.GET("/path/:name", wrapper.HelloPath)
 	router.POST("/upload", wrapper.Nameupload)
 

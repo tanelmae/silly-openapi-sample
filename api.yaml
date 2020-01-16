@@ -84,6 +84,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+  /image:
+    post:
+      description: Upload image with POST
+      operationId: img
+      requestBody:
+        description: Upload image to the server
+        required: true
+        content:
+          image/jpeg:
+            schema:
+              type: string
+              format: binary
+          image/png:
+            schema:
+              type: string
+              format: binary
+      responses:
+        "200":
+          description: Imgage response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImgResp"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     Error:
@@ -91,6 +120,12 @@ components:
         - name
       properties:
         message:
+          type: string
+    HelloReq:
+      required:
+        - name
+      properties:
+        name:
           type: string
     HelloResp:
       required:
@@ -106,6 +141,13 @@ components:
       properties:
         name:
           type: string
+    ImgResp:
+      required:
+        - name
+      properties:
+        critique:
+          type: string
+
   securitySchemes:
     bearerAuth:
       type: http

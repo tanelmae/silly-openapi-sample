@@ -19,6 +19,11 @@ type HelloResp struct {
 	Introduction *string `json:"introduction,omitempty"`
 }
 
+// ImgResp defines model for ImgResp.
+type ImgResp struct {
+	Critique *string `json:"critique,omitempty"`
+}
+
 // HelloParams defines parameters for Hello.
 type HelloParams struct {
 

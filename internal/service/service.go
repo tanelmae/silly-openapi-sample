@@ -4,11 +4,16 @@ import (
 	"fmt"
 	"github.com/Pallinder/sillyname-go"
 	"github.com/labstack/echo/v4"
+	"github.com/rs/xid"
 	"github.com/sourcekris/goTypos"
 	"github.com/tanelmae/silly-openapi-sample/pkg/gen"
+	"io"
 	"log"
 	"math/rand"
+	"mime"
 	"net/http"
+	"os"
+	"strings"
 )
 
 func New() Server {
@@ -73,6 +78,33 @@ func (s Server) Nameupload(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, r)
+}
+
+func (s Server) Img(ctx echo.Context) error {
+	// ctx.Request() returns http.Request from net/http
+	r := ctx.Request()
+	defer r.Body.Close()
+
+	guid := xid.New()
+
+	mediaType, _, err := mime.ParseMediaType(r.Header.Get("Content-Type"))
+	if err != nil {
+		return err
+	}
+
+	// Due OpenAPI spec based request validation only requests with image/jpeg or image/png reach this
+	f, err := os.Create(fmt.Sprintf("%s.%s", guid.String(), strings.Replace(mediaType, "image/", "", 1)))
+	if err != nil {
+		return err
+	}
+	io.Copy(f, r.Body)
+	f.Close()
+
+	resp := "Rather dull and unexciting image"
+	return ctx.JSON(http.StatusOK,
+		gen.ImgResp{
+			Critique: &resp,
+		})
 }
 
 func misspell(name string) string {
