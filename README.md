@@ -39,7 +39,7 @@ Invalid request
 curl http://localhost:8080/hello?ss=ee
 ```
 
-Upload image ()
+Upload image
 ```
 curl --request POST --header 'Content-Type: image/jpeg' --data-binary @img/moon.jpg http://localhost:8080/image
 curl --request POST --header 'Content-Type: image/png' --data-binary @img/space.png http://localhost:8080/image
