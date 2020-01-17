@@ -4,6 +4,11 @@
 Uses OpenAPI client and server code generator [**oapi-codegen**](https://github.com/deepmap/oapi-codegen)
 The generator supports both [Chi](https://github.com/go-chi/chi) and [Echo](https://github.com/labstack/echo) but just Echo is used in this sample.
 
+For mac oapi-codegen is available also via my Homebrew tap:
+```
+brew install tanelmae/brew/oapi-codegen
+```
+
 Generate server, types and spec from OpenAPI yaml:
 ```
 ./codegen.sh
