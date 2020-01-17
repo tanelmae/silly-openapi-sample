@@ -64,7 +64,7 @@ func main() {
 
 	openapi3filter.RegisterBodyDecoder("image/jpeg", ImageBodyDecoder)
 	openapi3filter.RegisterBodyDecoder("image/png", openapi3filter.FileBodyDecoder)
-	// We now register our petStore above as the handler for the interface
+	// We now register our service with generated server
 	gen.RegisterHandlers(e, s)
 
 	// And we serve HTTP until the world ends.
